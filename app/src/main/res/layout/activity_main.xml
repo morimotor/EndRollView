@@ -9,23 +9,38 @@
     >
 
     <jp.morimotor.endrollview.EndRollView
-        android:layout_height="240dp"
+        android:layout_height="220dp"
         android:layout_width="match_parent"
-        android:id="@+id/endrollview"/>
+        android:id="@+id/endrollview1"/>
 
-    <Button
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="start"
-        android:id="@+id/button1"
-        android:layout_gravity="center_horizontal" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="stop"
-        android:id="@+id/button2"
-        android:layout_gravity="center_horizontal" />
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="start"
+            android:id="@+id/button1"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="stop"
+            android:id="@+id/button2"/>
+    </LinearLayout>
 
 
+
+
+
+
+    <jp.morimotor.endrollview.EndRollView
+        android:layout_height="220dp"
+        android:layout_width="match_parent"
+        android:id="@+id/endrollview2"/>
 
 </LinearLayout>

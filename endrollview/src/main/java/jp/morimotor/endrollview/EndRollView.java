@@ -9,6 +9,8 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+
 
 public class EndRollView extends View {
     int backgroundColor = Color.BLACK;
@@ -28,6 +30,12 @@ public class EndRollView extends View {
     int count = 0;
 
     String[] Text;
+    ArrayList<TextParameter> TextP;
+
+    private static int NO_DATA = 0;
+    private static int NORMAL_TEXT = 1;
+    private static int PAR_TEXT = 2;
+    int useStr = NO_DATA;
 
 
     private static int START_MESSAGE = 1;
@@ -96,8 +104,13 @@ public class EndRollView extends View {
 
     public void setText(String[] text){
         Text = text;
+        useStr = NORMAL_TEXT;
     }
 
+    public void setText(ArrayList<TextParameter> text){
+        TextP = text;
+        useStr = PAR_TEXT;
+    }
 
 
 
@@ -145,40 +158,87 @@ public class EndRollView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        if(useStr == NO_DATA)return;
+
+
         Paint textPaint = new Paint( Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextSize(textSize);
         textPaint.setTextAlign(align);
         textPaint.setColor(textColor);
 
-        for (int i = 0; i < Text.length; i++) {
-            int text_y = height + (int)(textSize - count * speed) + interval * i;
-            int text_x;
-            if(isChangeLine)text_x = centerLine;
-            else  text_x = baseLine;
 
-            if(interval * i < count * speed){
+        if(useStr == NORMAL_TEXT){
+            for (int i = 0; i < Text.length; i++) {
+                int text_y = height + (int)(textSize - count * speed) + interval * i;
+                int text_x;
+                if(isChangeLine)text_x = centerLine;
+                else  text_x = baseLine;
 
-                textPaint.setAlpha(255);
+                if(interval * i < count * speed){
 
-                // フェードアウト
-                if(isfadeout && height * 0.2 > text_y){
-                    textPaint.setAlpha((int) (255 - (height * 0.2 - text_y)/(height * 0.2) * 255));
+                    textPaint.setAlpha(255);
 
+                    // フェードアウト
+                    if(isfadeout && height * 0.2 > text_y){
+                        textPaint.setAlpha((int) (255 - (height * 0.2 - text_y)/(height * 0.2) * 255));
+
+                    }
+                    // フェードイン
+                    else if(isfadein && height * 0.8 < text_y) {
+                        int a = (int) ( 255 - (text_y - height * 0.8)/(height - height * 0.8) * 255);
+                        if(a < 0)a = 0;
+                        if(a > 255)a = 255;
+                        textPaint.setAlpha(a);
+
+                    }
+
+                    canvas.drawText(Text[i], text_x, text_y, textPaint);
                 }
-                // フェードイン
-                else if(isfadein && height * 0.8 < text_y) {
-                    int a = (int) ( 255 - (text_y - height * 0.8)/(height - height * 0.8) * 255);
-                    if(a < 0)a = 0;
-                    if(a > 255)a = 255;
-                    textPaint.setAlpha(a);
 
+
+            }
+        }
+        else if(useStr == PAR_TEXT) {
+            for (int i = 0; i < TextP.size(); i++) {
+                TextParameter tp = TextP.get(i);
+
+                textPaint.setTextSize(tp.getTextSize());
+                textPaint.setTextAlign(tp.getAlign());
+                textPaint.setColor(tp.getColor());
+
+                int text_y = height + (int)(textSize - count * speed) + interval * i;
+                int text_x;
+                if(tp.getIsChangeLine())text_x = tp.getCenterLine();
+                else  text_x = baseLine;
+
+                if(interval * i < count * speed){
+
+                    textPaint.setAlpha(255);
+
+                    // フェードアウト
+                    if(tp.getIsfadeout() && height * 0.2 > text_y){
+                        textPaint.setAlpha((int) (255 - (height * 0.2 - text_y)/(height * 0.2) * 255));
+
+                    }
+                    // フェードイン
+                    else if(tp.getIsfadein() && height * 0.8 < text_y) {
+                        int a = (int) ( 255 - (text_y - height * 0.8)/(height - height * 0.8) * 255);
+                        if(a < 0)a = 0;
+                        if(a > 255)a = 255;
+                        textPaint.setAlpha(a);
+
+                    }
+
+                    canvas.drawText(tp.getText(), text_x, text_y, textPaint);
                 }
 
-                canvas.drawText(Text[i], text_x, text_y, textPaint);
+
             }
 
-
         }
+
+
+
         count++;
 
     }
