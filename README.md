@@ -9,7 +9,7 @@ Add this to your build.gradle:
     compile 'com.github.morimotor:endrollview:0.1.0'
 ```
 
-add xml code in you layout file:
+add xml code in your layout file:
 
 ```xml
     <jp.morimotor.endrollview.EndRollView
