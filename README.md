@@ -1,5 +1,5 @@
 # Android EndRollView
-![EndRollViewt](https://github.com/morimotor/EndRollView/blob/master/image/sample.gif)
+![EndRollViewt](https://github.com/morimotor/EndRollView/blob/master/image/sample_s.gif)
 
 #Usage
 
